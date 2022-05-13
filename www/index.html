@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Three.js - Index</title>
+  </head>
+  <body>
+    <h1>Index</h1>
+    <!--<p><a href="./1-square.html">1-Square</a></p>-->
+    <div class="button_container">
+      <button class="btn" role="button" onclick="window.location.href='./1-basicFigures.html'">Basic Figures</button>
+      <br/>
+      <button class="btn" role="button" onclick="window.location.href='./2-materials.html'">Materials</button>
+      <br/>
+      <button class="btn" role="button" onclick="window.location.href='./3-lights.html'">Lights</button>
+      <br/>
+      <button class="btn" role="button" onclick="window.location.href='./4-textures.html'">Textures</button>
+      <br/>
+      <button class="btn" role="button" onclick="window.location.href='./5-fog.html'">Fog</button>
+      <br/>
+      <button class="btn" role="button" onclick="window.location.href='./6-shadows.html'">Shadows</button>
+    </div>
+  </body>
+</html>
+
+<style>
+  h1 {
+    color: #673FD7;
+    font-family: 'Lucida Sans Unicode';
+    font-size: 65px;
+    text-align: center;
+    text-shadow: 0 1px 1px #fff;
+    position: relative;
+    margin: 10px;
+  }
+
+  .btn {
+    background-image: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-family: "Inter UI","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: 4rem;
+    padding: 0 1.6rem;
+    text-align: center;
+    text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+    transition: all .5s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin: 10px;
+  }
+
+  .btn:hover {
+    box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
+    transition-duration: .1s;
+  }
+
+  @media (min-width: 768px) {
+    .btn {
+      padding: 0 2.6rem;
+    }
+  }
+  .button_container {
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 10%;
+    text-align: center;
+  }
+</style>
