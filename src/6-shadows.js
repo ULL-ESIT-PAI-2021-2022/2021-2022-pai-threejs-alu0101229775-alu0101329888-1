@@ -1,4 +1,16 @@
-import * as THREE from '../node_modules/three/build/three.module.js'
+/**
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Programación de Aplicaciones Interactivas
+ *
+ * @author Edwin Plasencia Hernández & Gerard Antony Caramazza Vilá
+ * @since May 15 2022
+ * @desc Shadows and shadow maps in three.js
+ */
+
+import * as THREE from '../node_modules/three/build/three.module.js';
+import {GUI} from 'https://threejs.org/examples/jsm/libs/lil-gui.module.min.js';
 
 'use strict';
 
@@ -78,6 +90,26 @@ function main() {
   LIGHT.shadow.mapSize.width = 1024;                                            // This will make the shadow map's texture bigger so that we can get
   LIGHT.shadow.mapSize.height = 1024;                                           // careful, as the bigger it is the longer it will take to compute
   SCENE.add(LIGHT);  
+
+  const helper = new THREE.PointLightHelper(LIGHT);                                                   // This part is just to be able to move the light
+  SCENE.add(helper);                                                                                  // with the graphical interface, doesn't have anything
+  function updateLight() {                                                                            // to do with three.js so don't focus on this
+    helper.update();
+  }
+  function makeXYZGUI(gui, vector3, name, onChangeFn, sphere1, sphere2, sphere3) {
+    const folder = gui.addFolder(name);
+    folder.add(vector3, 'x', -10, 10).onChange(onChangeFn);
+    folder.add(vector3, 'y', 0, 10).onChange(onChangeFn);
+    folder.add(vector3, 'z', -10, 10).onChange(onChangeFn);
+    folder.add(sphere1, 'castShadow', 0, 1).name('Shadows (Bricks)').onChange(onChangeFn);
+    folder.add(sphere2, 'castShadow', 0, 1).name('Shadows (Tiles)').onChange(onChangeFn);
+    folder.add(sphere3, 'castShadow', 0, 1).name('Shadows (Wood)').onChange(onChangeFn);
+    folder.open();
+  }
+  const gui = new GUI();
+
+  makeXYZGUI(gui, LIGHT.position, 'position', updateLight, SPHERE_BRICKS, SPHERE_TILES, SPHERE_WOOD);
+
   // Render
   let time = 1;
   update(time);                                                                 // Now we call our loop function
@@ -101,5 +133,5 @@ function main() {
   }
 }
 
-// Calls the main function when the window is done loading.
-window.onload = main;
+// Calls the main function
+main();

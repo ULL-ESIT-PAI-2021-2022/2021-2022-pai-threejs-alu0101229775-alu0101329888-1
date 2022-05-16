@@ -17,3 +17,6 @@ https://davidlyons.dev/threejs-intro/#slide-0
 
 - Three.js tutorial:
 https://riptutorial.com/three-js
+
+- Three.js examples:
+https://threejs.org/examples/#webgl_animation_keyframes

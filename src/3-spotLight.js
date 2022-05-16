@@ -1,6 +1,31 @@
-import * as THREE from '../node_modules/three/build/three.module.js'
+/**
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Programación de Aplicaciones Interactivas
+ *
+ * @author Edwin Plasencia Hernández & Gerard Antony Caramazza Vilá
+ * @since May 15 2022
+ * @desc Spot lights in three.js
+ */
+
+import * as THREE from '../node_modules/three/build/three.module.js';
+import {GUI} from 'https://threejs.org/examples/jsm/libs/lil-gui.module.min.js';
 
 'use strict';
+
+class DegRadHelper {                                          // Class that handles degrees and radians, don't focus on it too much as it's only used
+  constructor(obj, prop) {                                    // for the gui and it has nothing to do with three.js
+    this.obj = obj;
+    this.prop = prop;
+  }
+  get value() {
+    return THREE.MathUtils.radToDeg(this.obj[this.prop]);
+  }
+  set value(v) {
+    this.obj[this.prop] = THREE.MathUtils.degToRad(v);
+  }
+}
 
 function main() {
   let CANVAS = document.getElementById('canvasBase'); // Canvas
@@ -29,6 +54,16 @@ function main() {
   const SPHERE_MEDIUM = new THREE.Mesh(SPHERE_MEDIUM_GEOMETRY, SPHERE_MEDIUM_MATERIAL);
   SPHERE_MEDIUM.position.set(0, 1, 0);
   SCENE.add(SPHERE_MEDIUM);
+  // Sphere
+  const SPHERE_GEOMETRY = new THREE.SphereGeometry(0.5);                 // Sphere with radius 0.5
+  const SPHERE_MATERIAL = new THREE.MeshStandardMaterial({               // Green standard material for the sphere
+    color: 'green',                                                             // with metalness of 0.5 and roughness of 0.5
+    metalness: 0.5,
+    roughness: 0.5
+  });
+  const SPHERE = new THREE.Mesh(SPHERE_GEOMETRY, SPHERE_MATERIAL);
+  SPHERE.position.set(-1, 1, 3);
+  SCENE.add(SPHERE);
   // Floor
   const FLOOR_GEOMETRY = new THREE.PlaneGeometry(10, 10);                       // Now let's add a floor with dimensions 10x10
   const FLOOR_MATERIAL = new THREE.MeshBasicMaterial({                          // Basic material for the floor with the color gray
@@ -40,11 +75,26 @@ function main() {
   // Lights
   const COLOR = 'white';                                                        // SpotLight
   const INTENSITY = 1.5;
-  const LIGHT = new THREE.SpotLight(COLOR, INTENSITY);
+  const DISTANCE = 100;
+  const ANGLE = 0.1;
+  const PENUMBRA = 0;
+  const LIGHT = new THREE.SpotLight(COLOR, INTENSITY, DISTANCE, ANGLE, PENUMBRA);
   LIGHT.position.set(5, 20, 5);                                                 // We set it on x=5 y=20 z=5 pointing to x=0 y=0 z=0
   LIGHT.target.position.set(0, 0, 0);
   SCENE.add(LIGHT);  
   SCENE.add(LIGHT.target);
+
+  const helper = new THREE.SpotLightHelper(LIGHT);                              // This is just a quickly made graphical interface, not really related to
+  SCENE.add(helper);                                                            // three.js so don't focus on it too much
+  function updateLight() {
+    LIGHT.target.updateMatrixWorld();
+    helper.update();
+  }
+  updateLight();
+  const gui = new GUI();
+  gui.add(new DegRadHelper(LIGHT, 'angle'), 'value', 0, 10).name('angle').onChange(updateLight);
+  gui.add(LIGHT, 'penumbra', 0, 1, 0.01);
+
   // Render
   update();                                                                     // Now we call our loop function
 
@@ -54,5 +104,5 @@ function main() {
   }
 }
 
-// Calls the main function when the window is done loading.
-window.onload = main;
+// Calls the main function
+main();

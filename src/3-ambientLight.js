@@ -1,3 +1,14 @@
+/**
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Programación de Aplicaciones Interactivas
+ *
+ * @author Edwin Plasencia Hernández & Gerard Antony Caramazza Vilá
+ * @since May 15 2022
+ * @desc Ambient lights in three.js
+ */
+
 import * as THREE from '../node_modules/three/build/three.module.js'
 
 'use strict';
@@ -29,6 +40,16 @@ function main() {
   const SPHERE_MEDIUM = new THREE.Mesh(SPHERE_MEDIUM_GEOMETRY, SPHERE_MEDIUM_MATERIAL);
   SPHERE_MEDIUM.position.set(0, 1, 0);
   SCENE.add(SPHERE_MEDIUM);
+  // Sphere
+  const SPHERE_GEOMETRY = new THREE.SphereGeometry(0.5);                 // Sphere with radius 0.5
+  const SPHERE_MATERIAL = new THREE.MeshStandardMaterial({               // Green standard material for the sphere
+    color: 'green',                                                             // with metalness of 0.5 and roughness of 0.5
+    metalness: 0.5,
+    roughness: 0.5
+  });
+  const SPHERE = new THREE.Mesh(SPHERE_GEOMETRY, SPHERE_MATERIAL);
+  SPHERE.position.set(-1, 1, 3);
+  SCENE.add(SPHERE);
   // Floor
   const FLOOR_GEOMETRY = new THREE.PlaneGeometry(10, 10);                       // Now let's add a floor with dimensions 10x10
   const FLOOR_MATERIAL = new THREE.MeshBasicMaterial({                          // Basic material for the floor with the color gray
@@ -39,7 +60,7 @@ function main() {
   SCENE.add(FLOOR);                                                             // and we add it to the scene   
   // Lights
   const COLOR = 'white';                                                        // AmbientLight
-  const INTENSITY = 1.5;
+  const INTENSITY = 1;
   const LIGHT = new THREE.AmbientLight(COLOR, INTENSITY);
   SCENE.add(LIGHT);  
   // Render
@@ -51,5 +72,5 @@ function main() {
   }
 }
 
-// Calls the main function when the window is done loading.
-window.onload = main;
+// Calls the main function
+main();

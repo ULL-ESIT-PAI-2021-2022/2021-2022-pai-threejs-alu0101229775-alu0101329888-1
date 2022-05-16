@@ -1,6 +1,46 @@
-import * as THREE from '../node_modules/three/build/three.module.js'
+/**
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Programación de Aplicaciones Interactivas
+ *
+ * @author Edwin Plasencia Hernández & Gerard Antony Caramazza Vilá
+ * @since May 15 2022
+ * @desc Fog creation in three.js
+ */
+
+import * as THREE from '../node_modules/three/build/three.module.js';
+import {GUI} from 'https://threejs.org/examples/jsm/libs/lil-gui.module.min.js';
 
 'use strict';
+
+class FogGUIHelper {                                                                    // Not related to three.js, just part of the graphical interface
+  constructor(fog, backgroundColor) {
+    this.fog = fog;
+    this.backgroundColor = backgroundColor;
+  }
+  get near() {
+    return this.fog.near;
+  }
+  set near(v) {
+    this.fog.near = v;
+    this.fog.far = Math.max(this.fog.far, v);
+  }
+  get far() {
+    return this.fog.far;
+  }
+  set far(v) {
+    this.fog.far = v;
+    this.fog.near = Math.min(this.fog.near, v);
+  }
+  get color() {
+    return `#${this.fog.color.getHexString()}`;
+  }
+  set color(hexString) {
+    this.fog.color.set(hexString);
+    this.backgroundColor.set(hexString);
+  }
+}
 
 function main() {
   let CANVAS = document.getElementById('canvasBase'); // Canvas
@@ -20,9 +60,17 @@ function main() {
   const SCENE = new THREE.Scene();                                              // Basic scene
   SCENE.background = new THREE.Color('white');                                  // We are gonna make the background of the scene white
   const NEAR_FOG = 1;                                                           // And we are adding fog to it, it will start from 1 block from the camera
-  const FAR_FOG = 4;                                                            // and will reach its end at 4 blocks away
+  const FAR_FOG = 10;                                                           // and will reach its end at 4 blocks away
   const COLOR_FOG = 'white';                                                    // it will also be a white fog, although we could make it any color we want
   SCENE.fog = new THREE.Fog(COLOR_FOG, NEAR_FOG, FAR_FOG);
+  SCENE.background = new THREE.Color(COLOR_FOG);
+
+  const gui = new GUI();                                                        // Don't pay attention to this part as it's just a graphical interface
+  const fogGUIHelper = new FogGUIHelper(SCENE.fog, SCENE.background);           // to change the fog values, it's not related to three.js
+  gui.add(fogGUIHelper, 'near', NEAR_FOG, FAR_FOG).listen();
+  gui.add(fogGUIHelper, 'far', NEAR_FOG, FAR_FOG).listen();
+  gui.addColor(fogGUIHelper, 'color');
+
   // Textures
   const LOADER = new THREE.TextureLoader();                                     // We initialize our texture loader
   const BRICKS = LOADER.load('./src/textures/bricks.jpg');                      // And save our textures in constants to be able to load them
@@ -80,5 +128,5 @@ function main() {
   }
 }
 
-// Calls the main function when the window is done loading.
-window.onload = main;
+// Calls the main function
+main();

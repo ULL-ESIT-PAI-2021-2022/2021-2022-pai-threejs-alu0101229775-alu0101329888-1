@@ -1,3 +1,14 @@
+/**
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Programación de Aplicaciones Interactivas
+ *
+ * @author Edwin Plasencia Hernández & Gerard Antony Caramazza Vilá
+ * @since May 15 2022
+ * @desc Hemisphere lights in three.js
+ */
+
 import * as THREE from '../node_modules/three/build/three.module.js'
 
 'use strict';
@@ -14,8 +25,8 @@ function main() {
   const NEAR = 0.1;                                                             // Nearest point that will be rendered from the camera
   const FAR = 100;                                                              // Farthest point that will be rendered from the camera
   const CAMERA = new THREE.PerspectiveCamera(FOV, ASPECT_RATIO, NEAR, FAR);     // Basic perspective camera
-  CAMERA.position.set(2, 3, 2);                                                 // We move to camera to x=2 y=2 z=2
-  CAMERA.lookAt(0, 0, 0);                                                       // and point it to x=0 y=0 z=0
+  CAMERA.position.set(2, 2, 2);                                                 // We move to camera to x=2 y=2 z=2
+  CAMERA.lookAt(-2, 0, 0);                                                       // and point it to x=0 y=0 z=0
   // Scene
   const SCENE = new THREE.Scene();                                              // Basic scene
   SCENE.background = new THREE.Color('white');                                  // We are gonna make the background of the scene white
@@ -29,6 +40,16 @@ function main() {
   const CUBE_MEDIUM = new THREE.Mesh(CUBE_MEDIUM_GEOMETRY, CUBE_MEDIUM_MATERIAL);
   CUBE_MEDIUM.position.set(0, 1, 0);
   SCENE.add(CUBE_MEDIUM);
+  // Sphere
+  const SPHERE_GEOMETRY = new THREE.SphereGeometry(0.5);                 // Sphere with radius 0.5
+  const SPHERE_MATERIAL = new THREE.MeshStandardMaterial({               // Green standard material for the sphere
+    color: 'white',                                                             // with metalness of 0.5 and roughness of 0.5
+    metalness: 0.5,
+    roughness: 0.5
+  });
+  const SPHERE = new THREE.Mesh(SPHERE_GEOMETRY, SPHERE_MATERIAL);
+  SPHERE.position.set(-1, 1, 3);
+  SCENE.add(SPHERE);
   // Floor
   const FLOOR_GEOMETRY = new THREE.PlaneGeometry(10, 10);                       // Now let's add a floor with dimensions 10x10
   const FLOOR_MATERIAL = new THREE.MeshBasicMaterial({                          // Basic material for the floor with the color gray
@@ -38,7 +59,7 @@ function main() {
   FLOOR.rotation.x = Math.PI * -.5;                                             // we rotate it to make it horizontal
   SCENE.add(FLOOR);                                                             // and we add it to the scene   
   // Lights
-  const COLOR_SKY = 'yellow';                                                   // HemisphereLight
+  const COLOR_SKY = 'red';                                                      // HemisphereLight
   const COLOR_GROUND = 'green';
   const INTENSITY = 1;                                                          // Light from the sky is blue and light from the ground is brown
   const LIGHT = new THREE.HemisphereLight(COLOR_SKY, COLOR_GROUND, INTENSITY);
@@ -52,5 +73,5 @@ function main() {
   }
 }
 
-// Calls the main function when the window is done loading.
-window.onload = main;
+// Calls the main function
+main();

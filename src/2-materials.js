@@ -1,6 +1,32 @@
-import * as THREE from '../node_modules/three/build/three.module.js'
+/**
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Programación de Aplicaciones Interactivas
+ *
+ * @author Edwin Plasencia Hernández & Gerard Antony Caramazza Vilá
+ * @since May 15 2022
+ * @desc Basic materials with three.js
+ */
+
+import * as THREE from '../node_modules/three/build/three.module.js';
+import {GUI} from 'https://threejs.org/examples/jsm/libs/lil-gui.module.min.js';
+
 
 'use strict';
+
+class ColorGUIHelper {
+  constructor(object, prop) {
+    this.object = object;
+    this.prop = prop;
+  }
+  get value() {
+    return `#${this.object[this.prop].getHexString()}`;
+  }
+  set value(hexString) {
+    this.object[this.prop].set(hexString);
+  }
+}
 
 function main() {
   let CANVAS = document.getElementById('canvasBase'); // Canvas
@@ -23,7 +49,7 @@ function main() {
   const SPHERE_GEOMETRY = new THREE.SphereGeometry(0.5);                        // Sphere with radius 0.5
   const SPHERE_MATERIAL = new THREE.MeshPhongMaterial({                         // Blue phong material for the sphere
     color: 'blue',                                                              // with sininess of 30
-    shininess: 30
+    shininess: 50
   });
   const SPHERE = new THREE.Mesh(SPHERE_GEOMETRY, SPHERE_MATERIAL);
   SPHERE.position.set(0, 1, 0);
@@ -82,7 +108,7 @@ function main() {
     color: 'gray',
   });
   const FLOOR = new THREE.Mesh(FLOOR_GEOMETRY, FLOOR_MATERIAL);                 // We create the actual mesh with its geometry and material
-  FLOOR.rotation.x = Math.PI * -.5;                                             // we rotate it to make it horizontal
+  FLOOR.rotation.x = Math.PI * -0.5;                                            // we rotate it to make it horizontal
   SCENE.add(FLOOR);                                                             // and we add it to the scene   
   // Light
   const COLOR = 'white';                                                        // We need a basic light to be able to see the spheres
@@ -90,6 +116,24 @@ function main() {
   const LIGHT = new THREE.PointLight(COLOR, INTENSITY);
   LIGHT.position.set(5, 20, 5);
   SCENE.add(LIGHT);  
+
+
+  const helper = new THREE.PointLightHelper(LIGHT);
+  SCENE.add(helper);
+  function updateLight() {                                                      // Graphical interface to let us move the light source, not related to three.js
+    helper.update();
+  }
+  function makeXYZGUI(gui, vector3, name, onChangeFn) {
+    const folder = gui.addFolder(name);
+    folder.add(vector3, 'x', -10, 10).onChange(onChangeFn);
+    folder.add(vector3, 'y', 0, 10).onChange(onChangeFn);
+    folder.add(vector3, 'z', -10, 10).onChange(onChangeFn);
+    folder.open();
+  }
+  const gui = new GUI();
+  makeXYZGUI(gui, LIGHT.position, 'position', updateLight);
+
+
   // Render
   update();                                                                     // Now we call our loop function
 
@@ -99,5 +143,5 @@ function main() {
   }
 }
 
-// Calls the main function when the window is done loading.
-window.onload = main;
+// Calls the main function
+main();

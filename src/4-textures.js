@@ -1,3 +1,14 @@
+/**
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Programación de Aplicaciones Interactivas
+ *
+ * @author Edwin Plasencia Hernández & Gerard Antony Caramazza Vilá
+ * @since May 15 2022
+ * @desc Texture importing and loading in three.js
+ */
+
 import * as THREE from '../node_modules/three/build/three.module.js'
 
 'use strict';
@@ -52,6 +63,20 @@ function main() {
   const SPHERE_WOOD = new THREE.Mesh(SPHERE_WOOD_GEOMETRY, SPHERE_WOOD_MATERIAL);
   SPHERE_WOOD.position.set(1, 1, -1);
   SCENE.add(SPHERE_WOOD);
+  // Cube
+  const CUBE_MATERIALS = [
+    new THREE.MeshBasicMaterial({ map: LOADER.load('./src/textures/bricks.jpg') }),
+    new THREE.MeshBasicMaterial({ map: LOADER.load('./src/textures/tiles.jpg') }),
+    new THREE.MeshBasicMaterial({ map: LOADER.load('./src/textures/wood.jpg') }),
+    new THREE.MeshBasicMaterial({ map: LOADER.load('./src/textures/wood.jpg') }),
+    new THREE.MeshBasicMaterial({ map: LOADER.load('./src/textures/bricks.jpg') }),
+    new THREE.MeshBasicMaterial({ map: LOADER.load('./src/textures/tiles.jpg') })
+  ];
+  const CUBE_GEOMETRY = new THREE.BoxGeometry(1, 1, 1);                // Cube with dimensions 1x1x1
+  const CUBE = new THREE.Mesh(CUBE_GEOMETRY, CUBE_MATERIALS);
+  CUBE.position.set(-1.5, 1, 2.5);
+  CUBE.rotation.y = Math.PI * -0.20;
+  SCENE.add(CUBE);
   // Floor
   const FLOOR_GEOMETRY = new THREE.PlaneGeometry(10, 10);                       // Now let's add a floor with dimensions 10x10
   const FLOOR_MATERIAL = new THREE.MeshBasicMaterial({                          // Basic material for the floor with a water texture
@@ -76,5 +101,5 @@ function main() {
   }
 }
 
-// Calls the main function when the window is done loading.
-window.onload = main;
+// Calls the main function
+main();
